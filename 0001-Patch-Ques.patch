@@ -1,0 +1,20 @@
+From 2d9c812f7f21bebb3c9a86a2a968d812f86992cb Mon Sep 17 00:00:00 2001
+From: pranavreddy2006 <pranavgangadicse2006@gmail.com>
+Date: Mon, 22 Sep 2025 11:35:09 +0530
+Subject: [PATCH] Patch Ques
+
+---
+ bug-fixing.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 bug-fixing.txt
+
+diff --git a/bug-fixing.txt b/bug-fixing.txt
+new file mode 100644
+index 0000000..db1c89a
+--- /dev/null
++++ b/bug-fixing.txt
+@@ -0,0 +1 @@
++Patch ques
+-- 
+2.47.1.windows.1
+
