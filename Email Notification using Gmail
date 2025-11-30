@@ -1,0 +1,78 @@
+Setting Up Jenkins Email Notification using Gmail (App Password Method)
+Follow these steps exactly, and Jenkins will start sending emails.
+
+📌 Step 1: Create Gmail App Password
+Requirements
+✔ You must enable 2-Step Verification (mandatory)
+✔ You must use the App Password, not your normal password
+Steps
+Open Gmail ➝ click your profile
+Click Manage your Google Account
+Go to Security
+Turn on ➝ 2-Step Verification
+Scroll down ➝ App Passwords
+Select:
+App: Other
+Name: Jenkins
+Click Generate
+Copy the 16-character password
+Example: abcd efgh ijkl mnop
+✔ Save this — Jenkins will use this as the password.
+
+📌 Step 2: Install Email Extension Plugin in Jenkins
+Open Jenkins Dashboard
+Go to Manage Jenkins
+Go to Manage Plugins
+In Available tab search for:
+Email Extension Plugin
+Install it
+Restart Jenkins (if asked)
+
+📌 Step 3: Configure Jenkins Global Email Settings
+Go to:
+👉 Manage Jenkins → Configure System
+Scroll down to:
+
+A. E-mail Notification (Basic SMTP)
+Fill like this:
+Field	Value
+SMTP server:	smtp.gmail.com
+Use SMTP Authentication	✔️
+User Name:	your Gmail (example: pranav@gmail.com)
+Password:	Your 16-digit App Password
+Use SSL	✔️
+SMTP Port:	465
+Reply-To Address:	your Gmail
+Click Test configuration and enter any email.
+✔ You should receive a test mail.
+
+B. Extended E-mail Notification (Advanced Email)
+Scroll further down to the Extended E-mail Notification section.
+Fill these fields:
+Field	Value
+SMTP Server:	smtp.gmail.com
+SMTP Port:	465
+Use SSL	✔️
+Credentials	Add Gmail + App Password
+Default Content Type:	text/html (or default)
+No need to touch other settings unless required.
+
+📌 Step 4: Configure Email Notification in Your Jenkins Job
+Open Jenkins → Your Job → Configure
+Scroll to Post-build Actions
+Click Add post-build action
+Choose Editable Email Notification
+Fill:
+Field	Value
+Project Recipient List	your email(s) (comma separated)
+Content Type	text/plain or text/html
+Triggers	
+✔ Failure	
+✔ Success (optional)	
+Click Save
+
+Done!
+Now Jenkins will send you an email:
+When a build succeeds (if selected)
+When a build fails
+When a GitHub webhook triggers a build
