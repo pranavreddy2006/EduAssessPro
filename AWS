@@ -1,0 +1,109 @@
+Creation of Virtual Machine (Ubuntu EC2) & Deployment of Web App (index.html) Using AWS EC2
+
+Step 1:
+Open your course portal and click on Modules.
+
+Step 2:
+Scroll down and select Launch AWS Academy Lab.
+
+Step 3:
+Click Start Lab.
+
+Step 4:
+Open the AWS console → In Services, select EC2.
+Launching an EC2 Instance
+
+Step 5:
+Go to Instances → click Launch Instance.
+
+Step 6:
+Enter the instance name:
+➡️ week-122
+
+Step 7:
+Select the OS:
+➡️ Ubuntu Server (latest LTS)
+
+Step 8:
+Architecture: 64-bit (x86)
+Instance type: t3.micro (free-tier eligible)
+Key Pair Creation
+
+Step 9:
+Click Create new key pair
+Key pair type: RSA
+File format: .pem
+Click Create key pair (download will start)
+Network Security Configuration
+
+Step 10:
+Under Network settings, choose:
+Create security group
+Security group name: (your choice)
+Click Edit (top right) → Add rule:
+Type	Port	Source
+SSH	22	Anywhere (0.0.0.0/0)
+This allows SSH connection.
+Storage & Instance Count
+
+Step 11:
+Storage: 8 GB
+Number of instances: 2
+Click Launch Instance
+
+Step 12:
+Instances will start launching. A success message appears.
+
+Step 13:
+Go to Instances to see the created instances.
+(Optional) Rename the instance:
+➡️ “week-1222” → webapp
+Connecting to EC2 via SSH
+
+Step 14:
+Select the instance → Click Connect → Choose SSH Client.
+Copy the SSH command shown.
+
+Step 15:
+Open terminal → navigate to the folder where your .pem file exists.
+Run the SSH command.
+Install Docker & Git
+
+Step 16:
+Check version:
+docker --version
+git --version
+If not installed:
+sudo su
+sudo apt-get update
+
+Step 17: Install Docker:
+sudo apt-get install docker.io
+Clone Git Project & Build Docker Image
+
+Step 18:
+Clone your Git repository:
+git clone <repo-url>
+Enter the project folder:
+cd <project-folder>
+
+Step 19:
+Check for Dockerfile:
+If not present, create one:
+nano Dockerfile
+Build image:
+sudo docker build -t img1 .
+
+Step 20: Run Docker Container
+sudo docker run -d -p 8081:8080 img1
+
+Step 21: Check Images & Containers
+sudo docker images
+sudo docker ps
+
+Step 22: Access the Web Application
+Take your Public IP from EC2 instance, e.g.:
+➡️ 13.222.21.231
+
+Open in browser:
+13.222.21.231:8081
