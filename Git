@@ -1,0 +1,180 @@
+✅ ALL GIT COMMANDS (ONE-LINE + WHEN TO USE)
+🔵 Repository Setup Commands
+1. git init
+Desc: Initialize a new local Git repository in a folder.
+Use When: Starting version control for any project.
+
+2. git remote add origin <URL>
+Desc: Connect your local repo to a GitHub remote repo.
+Use When: After creating a repo on GitHub and linking your project.
+
+3. git clone <URL>
+Desc: Download a remote repository to your system.
+Use When: Starting work on an existing project.
+
+4. git remote -v
+Desc: View all remote repositories linked to your project.
+Use When: To check remote URLs.
+
+5. git remote remove <name>
+Desc: Remove a remote repo link.
+Use When: Wrong remote added or repo no longer valid.
+
+6. git remote rename <old> <new>
+Desc: Rename a remote.
+Use When: Rename origin to something else.
+
+7. git remote set-url <name> <newURL>
+Desc: Change the URL of an existing remote.
+Use When: Repo moved, URL changed, or switching HTTPS ↔ SSH.
+
+8. git branch -r
+Desc: Show all remote branches.
+Use When: Checking remote repository branch list.
+
+9. git fetch <remote> <branch>
+Desc: Fetch only a specific branch.
+Use When: You don’t want all branches.
+
+10. git remote show origin
+Desc: Show detailed info about the remote.
+Use When: Check tracking branches, fetch info.
+
+🔵 Staging, Committing, and Undoing
+11. git add .
+Desc: Stage all changed files.
+Use When: Before committing all files.
+
+12. git add <file>
+Desc: Stage a single file.
+Use When: Selectively preparing files for commit.
+
+13. git commit -m "message"
+Desc: Save staged changes with a message.
+Use When: After staging changes.
+
+14. git commit --amend
+Desc: Modify the last commit message.
+Use When: You typed the wrong commit message and haven’t pushed.
+
+15. git reset <file>
+Desc: Unstage a file but keep changes.
+Use When: Used git add by mistake.
+
+16. git checkout -- <file>
+Desc: Discard changes in a file (not staged).
+Use When: You want to undo local changes to a file.
+
+17. git reset --hard
+Desc: Discard all local changes.
+Use When: Want a completely clean working directory.
+
+🔵 Working With Branches
+18. git branch
+Desc: List all local branches.
+Use When: See available branches.
+
+19. git branch <branchname>
+Desc: Create a new branch.
+Use When: Start working on a new feature.
+
+20. git switch <branch>
+Desc: Move to another branch.
+Use When: Change working branch.
+
+21. git checkout <branch>
+Desc: Alternative way to switch branches.
+Use When: Older Git versions.
+
+22. git checkout -b <branch>
+Desc: Create and switch to a new branch.
+Use When: Start a new feature immediately.
+
+23. git branch -d <branch>
+Desc: Delete a fully merged branch.
+Use When: Branch merged and no longer needed.
+
+24. git branch -D <branch>
+Desc: Forcefully delete a branch (even if unmerged).
+Use When: Discard unneeded or experimental branches.
+
+25. git fetch --prune
+Desc: Remove deleted remote branches from local.
+Use When: Remote branch deleted but still showing.
+
+🔵 Merging & Conflict Handling
+26. git merge <branch>
+Desc: Merge another branch into the current branch.
+Use When: Combine completed feature branch into main.
+
+27. git pull
+Desc: Fetch + merge remote changes.
+Use When: Update your code with remote repository.
+
+28. git fetch
+Desc: Download changes but do not merge.
+Use When: Review changes before merging.
+
+29. git rebase origin/main
+Desc: Reapply your commits on top of the latest main.
+Use When: Maintain clean and linear commit history.
+
+🔵 Viewing Status & History
+30. git status
+Desc: Show current changes, staged files, branch.
+Use When: Before staging or committing.
+
+31. git log
+Desc: Show commit history.
+Use When: Review previous commits.
+
+32. git log --oneline --graph
+Desc: Clean, readable commit history.
+Use When: Visualizing branch structure.
+
+33. git diff
+Desc: Show unstaged changes.
+Use When: View what you changed before staging.
+
+34. git blame <file>
+Desc: Shows who changed each line of a file.
+Use When: Finding who wrote/modified a specific line.
+
+🔵 Stashing (Temporary Saving)
+35. git stash
+Desc: Save uncommitted changes temporarily.
+Use When: Need to switch branches without committing.
+
+36. git stash pop
+Desc: Restore the last stashed changes and remove them from stash.
+Use When: Return to work after switching back.
+
+🔵 Remote Repository Commands
+37. git push
+Desc: Upload local commits to remote.
+Use When: After committing changes.
+
+38. git push -u origin <branch>
+Desc: Push for first time and set upstream branch.
+Use When: First push of new branch.
+
+39. git push origin --delete <branch>
+Desc: Delete a branch on remote.
+Use When: Remote feature branch not needed anymore.
+
+🔵 Other Important Commands
+40. git config --global user.name "Your Name"
+Desc: Set your name globally.
+Use When: First-time Git setup.
+
+41. git config --global user.email "you@example.com"
+Desc: Set your email globally.
+Use When: Needed for commits.
+
+42. git rm --cached <file>
+Desc: Remove a file from Git tracking but keep it locally.
+Use When: Accidentally committed API keys, passwords, logs.
+
+43. .gitignore file
+Desc: Tells Git which files/folders NOT to track.
+Use When: Hiding logs, node_modules, env, keys.
