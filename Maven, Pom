@@ -1,3 +1,8 @@
+Select org.apache.maven.archetypes   maven-archetype-quickstart 1.4 and click on next  for maven java in filter
+Select org.apache.maven.archetypes   maven-archetype-webapp 1.4 and click on next for maven web in filter
+
+
+
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
