@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Clone Repository') {
+            steps {
+                echo "Cloning GitHub Repository..."
+                git branch: 'main', url: 'https://github.com/pranavreddy2006/SimpleMavenWebProject.git'
+            }
+        }
+
+        stage('Build Project') {
+            steps {
+                echo "Building Maven Project..."
+                sh 'mvn clean install'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo "Running Tests..."
+                sh 'mvn test'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                echo "Packaging Project..."
+                sh 'mvn package'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline executed successfully!"
+        }
+        failure {
+            echo "Pipeline failed!"
+        }
+    }
+}
