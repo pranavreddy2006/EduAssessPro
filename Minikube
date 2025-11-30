@@ -1,0 +1,40 @@
+Step 1: Start Minikube
+minikube start
+
+Step 2: Create Deployment
+kubectl create deployment mynginx --image=nginx
+If deployment already exists:
+kubectl set image deployment/mynginx nginx=nginx:latest
+Check deployment:
+kubectl get deployments
+kubectl get pods
+kubectl describe pods
+Expose deployment as a service:
+kubectl expose deployment mynginx --type=NodePort --port=80 --target-port=80
+
+Step 3: Scale Deployment
+kubectl scale deployment mynginx --replicas=4
+kubectl get service mynginx
+
+Step 4: Access Nginx:
+Option A — Port Forwarding
+kubectl port-forward svc/mynginx 8081:80
+Open:
+http://localhost:8081
+
+Option B — Minikube Tunnel
+Start tunnel:
+minikube tunnel
+Get URL:
+minikube service mynginx --url
+Open dashboard:
+minikube dashboard
+
+Step 5: Cleanup
+Stop deployment & service:
+kubectl delete deployment mynginx
+kubectl delete service mynginx
+Stop Minikube:
+minikube stop
+Delete Minikube cluster:
+minikube delete
