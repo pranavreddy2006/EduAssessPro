@@ -1,0 +1,122 @@
+| Purpose                        | Command                          |
+| ------------------------------ | -------------------------------- |
+| Pull an image                  | `docker pull <image>`            |
+| List all images                | `docker images`                  |
+| Remove an image                | `docker rmi <image>`             |
+| Download image from Docker Hub | `docker pull <username>/<image>` |
+| Upload image to Docker Hub     | `docker push <username>/<image>` |
+
+
+
+
+| Purpose                         | Command                                              |
+| ------------------------------- | ---------------------------------------------------- |
+| Run container                   | `docker run <image>`                                 |
+| Run with name + background mode | `docker run --name <name> -d <image>`                |
+| Run & map ports                 | `docker run -p <host_port>:<container_port> <image>` |
+| Start a stopped container       | `docker start <container>`                           |
+| Stop a running container        | `docker stop <container>`                            |
+| Delete a container              | `docker rm <container>`                              |
+| Delete container using ID       | `docker rm <id>`                                     |
+| List only running containers    | `docker ps`                                          |
+| List ALL containers             | `docker ps -a`                                       |
+| Restart container automatically | `docker run --restart=always <image>`                |
+
+
+
+| Purpose                  | Command                             |
+| ------------------------ | ----------------------------------- |
+| Enter container shell    | `docker exec -it <container> sh`    |
+| Open Redis CLI (example) | `docker exec -it myredis redis-cli` |
+| Exit Redis/CLI           | `exit`                              |
+
+
+| Purpose                             | Command                         |
+| ----------------------------------- | ------------------------------- |
+| View container logs                 | `docker logs <container>`       |
+| Monitor CPU/MEM usage               | `docker stats`                  |
+| Check container details             | `docker inspect <container>`    |
+| See which container uses which port | `docker ps` (check PORT column) |
+
+
+| Purpose                     | Command                                              |
+| --------------------------- | ---------------------------------------------------- |
+| Build image from Dockerfile | `docker build -t <image_name> .`                     |
+| Retag an existing image     | `docker tag <old> <new>`                             |
+| Export image to tar         | `docker save -o <file>.tar <image>`                  |
+| Create image from container | `docker commit <container_id> <username>/<newimage>` |
+
+
+| Purpose                | Command         |
+| ---------------------- | --------------- |
+| Login to Docker Hub    | `docker login`  |
+| Logout from Docker Hub | `docker logout` |
+
+
+
+| Instruction | Purpose                         |
+| ----------- | ------------------------------- |
+| `FROM`      | Base image                      |
+| `CMD […]`   | Default command to run          |
+| `RUN`       | Run shell commands during build |
+| `COPY`      | Copy files to image             |
+| `WORKDIR`   | Set working directory           |
+
+
+
+
+🟦 Scenario-Based Commands Summary
+1. Check running containers
+docker ps
+
+2. Stop a container named web_app
+docker stop web_app
+
+3. Build image named myapi
+docker build -t myapi .
+
+4. Run container exposing port 5000 → 8080
+docker run -p 8080:5000 --name web_app -d myapi
+
+5. Enter container shell
+docker exec -it <container> sh
+
+6. Delete image old_api
+docker rmi old_api
+
+7. Check logs of container
+docker logs <container>
+
+8. Run container in background
+docker run -d <image>
+
+9. Find which container uses port 3000
+docker ps
+
+10. Tag an untagged image
+docker tag <image_id> myimage:newtag
+
+11. Export image to tar
+docker save -o backup.tar myimage
+
+12. Auto-restart container
+docker run --restart=always <image>
+
+13. Check CPU/RAM use
+docker stats
+
+13(b). Limit RAM
+docker run -m 512m <image>
+
+14. Run shell command before starting app
+
+In Dockerfile:
+
+RUN <your_command>
+
+15. Create custom Nginx image
+
+Dockerfile:
+
+FROM nginx:latest
+COPY ./static /usr/share/nginx/html
