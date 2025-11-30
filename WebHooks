@@ -1,0 +1,62 @@
+Setting Up Jenkins CI using GitHub Webhook with Jenkins
+(Using Ngrok for public URL)
+
+Step 1: Start Ngrok for Jenkins
+Open the terminal where ngrok is installed and run:
+ngrok http 8080
+(Assuming Jenkins is running on port 8080)
+Ngrok will generate a Forwarding URL, such as:
+https://corkier-darla-handsome.ngrok-free.dev
+This URL will be used in GitHub Webhook.
+
+Step 2: Verify Ngrok Output
+Ngrok terminal will display:
+Forwarding URL (HTTPS)
+Connection status
+Active tunnels
+Use the HTTPS URL only.
+Step 3: Create a New Jenkins Job
+Go to Jenkins dashboard
+Click New Item
+Enter job name
+Select Freestyle project → OK
+Configure:
+Source Code Management → Git
+Git Repo URL:
+https://github.com/username/repository.git
+Branch:
+*/main
+(Make sure GitHub branch = Jenkins branch)
+
+Step 4: Enable GitHub Webhook Trigger
+Go to:
+Build Triggers → Select:
+GitHub hook trigger for GITScm polling
+Click Apply → Save
+
+Step 5: Configure Webhook in GitHub
+Open your GitHub repository
+Go to Settings → Webhooks
+Click Add Webhook
+Enter:
+Payload URL
+https://corkier-darla-handsome.ngrok-free.dev/github-webhook/
+(The suffix /github-webhook/ is mandatory)
+Content type:
+application/json
+Trigger:
+✔ Just the push event
+Click Add Webhook
+GitHub will test and show:
+✓ 200 OK
+
+Step 6: Trigger the Pipeline
+Open any file in your GitHub repo
+Edit the file
+Click Commit changes
+
+Step 7: Verify Jenkins Build
+Go to Jenkins → your project.
+You will see:
+Started by GitHub push
+The build will run automatically without manual triggering.
