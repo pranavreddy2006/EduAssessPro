@@ -1,0 +1,36 @@
+Step 1: Pull the Nagios Docker Image
+docker pull jasonrivers/nagios:latest
+
+Step 2: Run Nagios
+docker run --name nagiosdemo -p 8888:80 jasonrivers/nagios:latest
+
+Step 3: Access Nagios Dashboard
+Open browser:
+http://localhost:8888
+Login Credentials:
+Username: nagiosadmin
+Password: nagios
+Explore:
+Hosts – View monitored systems
+Services – CPU, memory, processes, etc.
+Alerts – Recent notifications
+
+Step 4: Monitoring Host Details
+Go to Hosts → select any host
+Observe:
+Host Status (UP / DOWN)
+Metrics (CPU, RAM, Network)
+Actions (disable notifications, schedule downtime, etc.)
+
+Step 5: Stop and Remove Nagios
+1. Stop the container
+docker stop nagiosdemo
+2. Remove the container
+docker rm nagiosdemo
+3. Remove the image (optional)
+List images:
+docker images
+Remove the image:
+docker rmi jasonrivers/nagios:latest
+4. Observation
+In Docker Hub / Dashboard → You can see Nagios container running on port 8888.
