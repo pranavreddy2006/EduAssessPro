@@ -1,0 +1,345 @@
+LAB — DOCKER COMPOSE (Step-by-step)
+Preparation (one-time)
+
+Open terminal
+
+Windows: Open PowerShell or Git Bash.
+
+Mac/Linux: Open Terminal.
+
+Verify Docker & Compose installed
+
+docker --version
+docker compose version
+
+
+If either command fails, install Docker Desktop (Windows/Mac) or Docker Engine + Compose Plugin (Linux).
+
+Workspace setup
+
+Create lab folder
+
+# Mac/Linux
+mkdir -p ~/compose-lab && cd ~/compose-lab
+
+# Windows PowerShell
+mkdir C:\compose-lab
+cd C:\compose-lab
+# or in Git Bash:
+cd /c/compose-lab
+
+
+Open your editor (VS Code recommended)
+
+# from terminal if code CLI available:
+code .
+
+
+Or open the folder in your preferred editor.
+
+TASK 1 — Basic compose (nginx + postgres)
+1. Create docker-compose.yml
+
+Create a file named docker-compose.yml in compose-lab with this exact content:
+
+version: "3.9"
+
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: demo
+      POSTGRES_PASSWORD: demo
+      POSTGRES_DB: demo_db
+
+
+(Save the file.)
+
+2. Start services (in terminal, inside compose-lab)
+docker compose up -d
+
+3. Verify
+docker compose ps              # shows running services
+docker ps                      # shows running containers
+
+
+Open browser → http://localhost:8080 → Nginx welcome page should appear.
+Take a screenshot of the browser + docker compose ps output.
+
+TASK 2 — Add Redis + depends_on
+1. Edit docker-compose.yml to add Redis and depends_on
+
+Replace web service block with:
+
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    depends_on:
+      - redis
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: demo
+      POSTGRES_PASSWORD: demo
+      POSTGRES_DB: demo_db
+
+  redis:
+    image: redis:alpine
+
+
+Save the file.
+
+2. Restart compose (apply changes)
+docker compose up -d
+
+3. Verify
+docker compose ps
+# Expect: web, db, redis all listed as up
+docker logs <container_name>   # optional, e.g. docker logs compose-lab-redis-1
+
+
+Take screenshots of docker compose ps showing three services.
+
+TASK 3 — Deploy on another machine (brief steps for handoff)
+
+Zip the folder
+
+# Mac/Linux
+cd ~/ && zip -r compose-lab.zip compose-lab
+
+# Windows PowerShell (from parent folder)
+Compress-Archive -Path .\compose-lab\* -DestinationPath .\compose-lab.zip
+
+
+Transfer compose-lab.zip to target machine (USB / SCP / Google Drive).
+
+On target machine open terminal, unzip and run:
+
+unzip compose-lab.zip   # or extract in File Explorer
+cd compose-lab
+docker compose up -d
+docker compose ps
+
+
+Verify http://<target-machine-ip>:8080 shows Nginx (if ports and firewall permit).
+
+TASK 4 — Add custom network & persistent volume
+1. Update docker-compose.yml (replace whole file with this)
+version: "3.9"
+
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    networks:
+      - app-net
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: demo
+      POSTGRES_PASSWORD: demo
+      POSTGRES_DB: demo_db
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - app-net
+
+  redis:
+    image: redis:alpine
+    networks:
+      - app-net
+
+networks:
+  app-net:
+
+volumes:
+  db-data:
+
+
+Save.
+
+2. Bring up services
+docker compose up -d
+
+3. Verify network & volume
+docker network ls
+docker network inspect compose-lab_app-net   # shows connected containers
+docker volume ls
+docker volume inspect compose-lab_db-data
+
+4. Check data persistence
+
+Enter DB (Postgres) container and create some test data (optional):
+
+# find db container name
+docker compose ps
+# exec into postgres (psql client not present in image by default); you can run a temporary psql client:
+docker run --rm -it --network compose-lab_app-net postgres:15 psql -h db -U demo -d demo_db
+# When prompted, enter password: demo
+# In psql:
+CREATE TABLE testdata (id SERIAL PRIMARY KEY, name TEXT);
+INSERT INTO testdata (name) VALUES ('labtest');
+SELECT * FROM testdata;
+\q
+
+
+Now stop & remove containers (keeping volumes):
+
+docker compose down
+
+
+Start again:
+
+docker compose up -d
+
+
+Re-run the psql client and SELECT * FROM testdata; to confirm data persists.
+
+Take screenshots demonstrating data before down, after up.
+
+TASK 5 — Faster iteration: Flask app with build
+1. Replace web with a build service (create files)
+
+In compose-lab create app.py with:
+
+from flask import Flask
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Hello from Flask + Docker!"
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
+
+
+Create Dockerfile (same folder) with:
+
+FROM python:3.10-slim
+WORKDIR /app
+COPY app.py /app/
+RUN pip install --no-cache-dir flask
+CMD ["python", "app.py"]
+
+
+Update docker-compose.yml to:
+
+version: "3.9"
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    networks:
+      - app-net
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: demo
+      POSTGRES_PASSWORD: demo
+      POSTGRES_DB: demo_db
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - app-net
+
+networks:
+  app-net:
+
+volumes:
+  db-data:
+
+2. Build & start
+docker compose up --build -d
+
+3. Verify
+
+Open browser → http://localhost:5000 → should show Hello from Flask + Docker!
+Take screenshot.
+
+4. Edit & update quickly
+
+Edit app.py to:
+
+    return "Hello Docker Compose!"
+
+
+Rebuild/start (no need to down):
+
+docker compose up --build -d
+
+
+Refresh http://localhost:5000 → new message should appear.
+
+Useful Commands (copy-paste checklist)
+# See running containers
+docker compose ps
+docker ps
+
+# Logs
+docker compose logs web
+docker compose logs -f         # follow logs
+
+# Enter container shell (if image has shell)
+docker exec -it <container_name> sh
+docker exec -it <container_name> bash   # if bash exists
+
+# Stop/Start/Down
+docker compose stop
+docker compose start
+docker compose down
+
+# Remove volumes (careful, deletes data)
+docker compose down -v
+
+# Scale a service
+docker compose up -d --scale web=2
+
+# Show networks and inspect
+docker network ls
+docker network inspect compose-lab_app-net
+
+# Show volumes
+docker volume ls
+docker volume inspect compose-lab_db-data
+
+# Rebuild a single service
+docker compose build web
+docker compose up -d web
+
+# Remove images you built
+docker images
+docker rmi <image_id_or_name>
+
+# Save/zip project for transfer
+zip -r compose-lab.zip compose-lab
+# or on Windows:
+Compress-Archive -Path .\compose-lab\* -DestinationPath .\compose-lab.zip
+
+Cleanup at end of lab
+# Stop and remove containers, networks (keep volumes)
+docker compose down
+
+# If you want to remove volumes too (destroys DB data)
+docker compose down -v
+
+# Remove images you built (example)
+docker rmi compose-lab_web:latest   # or the image name from docker images
+
+d only for startup ordering; use retry logic in app or wait-for scripts for robust startups.
