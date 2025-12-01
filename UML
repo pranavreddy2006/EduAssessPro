@@ -1,0 +1,58 @@
+🎭 Actors
+Job Seeker: Registers, searches jobs, applies, uploads resume.
+
+Recruiter/Employer: Posts jobs, reviews applications, schedules interviews.
+
+System Administrator: Manages users, maintains system integrity.
+
+Payment Gateway (optional): Handles premium job postings or paid services.
+
+📌 Use Cases (Messages/Interactions)
+Register Account: Actor creates profile.
+
+Login: Access system with credentials.
+
+Search Jobs: Job seeker browses available postings.
+
+Apply for Job: Submit application with resume.
+
+Upload Resume: Attach CV to profile.
+
+Post Job: Recruiter creates new job listing.
+
+Review Applications: Recruiter checks candidate submissions.
+
+Schedule Interview: Recruiter arranges interview with candidate.
+
+Manage Users: Admin oversees accounts.
+
+Payment Processing: Employer pays for premium services.
+
+🔗 Relationships (Include / Extend)
+Login → include → Register Account (if new user).
+
+Apply for Job → include → Upload Resume (resume required).
+
+Post Job → include → Payment Processing (if premium posting).
+
+Schedule Interview → extend → Review Applications (only if candidate is shortlisted).
+
+Search Jobs → extend → Filter Jobs (optional refinement).
+
+🖼️ Diagram Structure (Textual Representation)
+Code
+Actors: Job Seeker, Recruiter, Admin, Payment Gateway
+
+Job Seeker ----> (Register Account)
+Job Seeker ----> (Login)
+Job Seeker ----> (Search Jobs) ----<<extend>>---- (Filter Jobs)
+Job Seeker ----> (Apply for Job) ----<<include>>---- (Upload Resume)
+
+Recruiter ----> (Login)
+Recruiter ----> (Post Job) ----<<include>>---- (Payment Processing)
+Recruiter ----> (Review Applications) ----<<extend>>---- (Schedule Interview)
+
+Admin ----> (Manage Users)
+✅ This gives you a complete conceptual model: actors, their messages (use cases), and the connections with include/extend relationships.
+
+Would you like me to generate a proper UML-style diagram image of this online recruitment system so you can visualize it clearly?
